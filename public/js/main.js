@@ -1,12 +1,10 @@
 const chatForm = document.querySelector('#chat-form');
 const chatMessages = document.querySelector('.chat-messages');
 const socket = io();
-console.log('<%= account %>');
 socket.on('message', (msg) => {
   showMessage(msg);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
-socket.on('redirect', (url) => (window.location.href = url));
 chatForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const msg = e.target.elements.msg;
@@ -14,6 +12,8 @@ chatForm.addEventListener('submit', (e) => {
   msg.value = '';
   msg.focus();
 });
+
+socket.on('redirect', (url) => (window.location.href = url));
 
 function showMessage(msg) {
   const div = document.createElement('div');
