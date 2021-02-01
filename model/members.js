@@ -3,35 +3,59 @@ const memberSchema = new mongoose.Schema({
   account: {
     type: String,
     required: true,
-    maxlength: 20
+    maxlength: 20,
   },
   password: {
     type: String,
     required: true,
-    maxlength: 20
-  }
+    maxlength: 20,
+  },
 });
 
 const Member = mongoose.model('Member', memberSchema);
 
-exports.register = (account, password) => {
-  let member = new Member({account: account, password: password});
-  member.save();
-}
+exports.create = (account, password) => {
+  let member = new Member({ account: account, password: password });
+  return new Promise((resolve, reject) => {
+    member.save((err, res) => {
+      if (err) reject(err);
+      resolve(res);
+    });
+  });
+};
 
 exports.findByAccount = (account) => {
   return new Promise((resolve, reject) => {
-    Member.findOne({account: account}, (err, result) => {
+    Member.findOne({ account: account }, (err, result) => {
       if (err) reject(err);
       resolve(result);
-    })
-  })
-}
+    });
+  });
+};
 
 exports.delete = (account) => {
-  Member.deleteOne({account: account});
-}
+  return new Promise((resolve, reject) => {
+    Member.findOneAndDelete({ account: account }, (err, res) => {
+      if (err) reject(err);
+      resolve(res);
+    });
+  });
+};
 
-exports.modify = (data) => {
+exports.update = (account, password) => {
+  return new Promise((resolve, reject) => {
+    Member.findOneAndUpdate({ account: account }, { $set: { password: password } }, { new: true }, (err, res) => {
+      if (err) reject(err);
+      resolve(res);
+    });
+  });
+};
 
-}
+exports.findAll = () => {
+  return new Promise((resolve, reject) => {
+    Member.find((err, res) => {
+      if (err) reject(err);
+      resolve(res);
+    });
+  });
+};

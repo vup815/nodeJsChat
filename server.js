@@ -3,7 +3,7 @@ const path = require("path"),
   express = require("express"),
   socketio = require("socket.io"),
   session = require("express-session"),
-  formatMessage = require("./utils/messages"),
+  {formatMessage} = require("./utils/messages"),
   mongoDB = require("./database/mongoDB"),
   messageRouter = require("./routes/messages"),
   messageModel = require("./model/messages"),
@@ -37,10 +37,10 @@ io.on("connection", (socket) => {
   socket.emit("message", formatMessage(Bot, "Welcome"));
   socket.broadcast.emit(
     "message",
-    formatMessage(Bot, "A user has joined the chat")
+    formatMessage(Bot, `${session.user.account} has joined the chat`)
   );
   socket.on("disconnect", () => {
-    io.emit("message", formatMessage(Bot, "A user has left the chat"));
+    // io.emit("message", formatMessage(Bot, `${session.user.account} has joined the chat`));
   });
   socket.on("chatMessage", (msg) => {
     if (!session.user || !session.user.account) {
@@ -56,3 +56,5 @@ io.on("connection", (socket) => {
 const PORT = process.env.PORT || 3001;
 
 server.listen(PORT, () => console.log(`Server running on ${PORT}`));
+
+module.exports = app;
