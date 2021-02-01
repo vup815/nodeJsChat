@@ -37,9 +37,7 @@ io.on('connection', (socket) => {
   const session = socket.request.session;
   socket.emit('message', formatMessage(Bot, 'Welcome'));
   socket.broadcast.emit('message', formatMessage(Bot, `${session.user.account} has joined the chat`));
-  socket.on('disconnect', () => {
-    // io.emit("message", formatMessage(Bot, `${session.user.account} has joined the chat`));
-  });
+
   socket.on('chatMessage', (msg) => {
     if (!session.user || !session.user.account) {
       io.emit('redirect', 'index.html');
@@ -51,7 +49,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 7788;
 
 server.listen(PORT, () => console.log(`Server running on ${PORT}`));
 
