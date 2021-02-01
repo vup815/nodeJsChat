@@ -35,17 +35,20 @@ io.use((socket, next) => {
 
 io.on('connection', (socket) => {
   const session = socket.request.session;
+  if (!session.user || !session.user.account) {
+    return io.emit('redirect', 'index.html');
+  }
   socket.emit('message', formatMessage(Bot, 'Welcome'));
   socket.broadcast.emit('message', formatMessage(Bot, `${session.user.account} has joined the chat`));
 
+  socket.on('disconnect', () => {
+    socket.broadcast.emit('message', formatMessage(Bot, `${session.user.account} has left the chat`));
+  });
+
   socket.on('chatMessage', (msg) => {
-    if (!session.user || !session.user.account) {
-      io.emit('redirect', 'index.html');
-    } else {
-      let msgObj = formatMessage(session.user.account, msg);
-      io.emit('message', msgObj);
-      messageModel.create(JSON.stringify(msgObj));
-    }
+    let msgObj = formatMessage(session.user.account, msg);
+    io.emit('message', msgObj);
+    messageModel.create(JSON.stringify(msgObj));
   });
 });
 
