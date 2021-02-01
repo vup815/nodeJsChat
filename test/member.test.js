@@ -32,7 +32,7 @@ describe('Members: Register, modify and remove account', () => {
   it('should change the password and return modified data', (done) => {
     request(app)
       .put('/members/test')
-      .field('password', 'tttt')
+      .send({ password: 'tttt' })
       .end((err, res) => {
         if (err) done(err);
         expect(JSON.parse(res.text)).property('password').equal('tttt');

@@ -6,7 +6,7 @@ router.get('/', findAll);
 router.get('/logout', logout);
 router.post('/login', multer().none(), login);
 router.post('/register', multer().none(), register);
-router.put('/:account', multer().none(), changePw);
+router.put('/:account', changePw);
 router.delete('/:account', deleteAccount);
 
 module.exports = router;

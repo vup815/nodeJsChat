@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Table V02</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="css/member_list.css" />
+  </head>
+  <body>
+    <div class="limiter">
+      <div class="container-table100">
+        <div class="wrap-table100">
+          <div class="table">
+            <div class="row header">
+              <div class="cell">Account</div>
+              <div class="cell">Password</div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <% for(member of members) { %>
+            <div class="row">
+              <div class="cell account"><%= member.account %></div>
+              <div class="cell"><input type="text" autocomplete="off" value="<%= member.password %>" /></div>
+              <div class="cell modify">更改密碼</div>
+              <div class="cell delete">刪除帳號</div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/member.js"></script>
+  </body>
+</html>
